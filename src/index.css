@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-900: #1e3a8a;
+  
+  --color-accent: #8b5cf6;
+  --color-accent-dark: #6d28d9;
+  
+  --color-zinc-850: #1f2229;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #0f0f11;
+}
+
+/* Custom CSS to enforce a very dark modern app design */
+@layer base {
+  body {
+    @apply bg-zinc-950 text-zinc-100;
+  }
+}
+
+/* Scrollbar utils */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-800 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-700;
+}
