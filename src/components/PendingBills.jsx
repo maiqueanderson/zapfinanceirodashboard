@@ -5,22 +5,21 @@ import { formatCurrency } from '../utils/formatters';
 export default function PendingBills({ bills }) {
   const [expandedMonth, setExpandedMonth] = useState(null);
 
-  // Filtrar faturas e outras contas
-  const faturas = bills.filter(b => {
-    const desc = b.description.toLowerCase();
-    return desc.includes('fatura') || desc.includes('cartão') || desc.includes('cartao');
-  });
-  
-  const others = bills.filter(b => {
-    const desc = b.description.toLowerCase();
-    return !(desc.includes('fatura') || desc.includes('cartão') || desc.includes('cartao'));
-  });
-
-  // Agrupar faturas por mês
   const monthsArr = [
     'janeiro', 'fevereiro', 'março', 'marco', 'abril', 'maio', 'junho', 
     'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
   ];
+
+  const checkIsFatura = (desc) => {
+    const lowerDesc = desc.toLowerCase();
+    const containsFaturaTerm = lowerDesc.includes('fatura') || lowerDesc.includes('cartão') || lowerDesc.includes('cartao');
+    const containsMonth = monthsArr.some(m => lowerDesc.includes(m));
+    return containsFaturaTerm || containsMonth;
+  };
+
+  // Filtrar faturas e outras contas
+  const faturas = bills.filter(b => checkIsFatura(b.description));
+  const others = bills.filter(b => !checkIsFatura(b.description));
   
   const faturasByMonth = faturas.reduce((acc, fatura) => {
     let monthName = 'Outros';
