@@ -68,8 +68,17 @@ export default function PendingBills({ bills }) {
                   Faturas de Cartão
                 </h3>
                 <div className="space-y-2">
-                  {Object.entries(faturasByMonth).map(([month, monthBills]) => (
-                    <div key={month} className="bg-zinc-800/30 border border-zinc-700/50 rounded-xl overflow-hidden transition-all duration-300">
+                  {Object.entries(faturasByMonth)
+                    .sort((a, b) => {
+                      const getIdx = (m) => {
+                        let idx = monthsArr.findIndex(x => x === m.toLowerCase());
+                        if (idx === -1 && m.toLowerCase() === 'março') idx = monthsArr.indexOf('marco');
+                        return idx === -1 ? 999 : idx;
+                      };
+                      return getIdx(a[0]) - getIdx(b[0]);
+                    })
+                    .map(([month, monthBills]) => (
+                      <div key={month} className="bg-zinc-800/30 border border-zinc-700/50 rounded-xl overflow-hidden transition-all duration-300">
                       <button 
                         onClick={() => toggleMonth(month)}
                         className="w-full flex items-center justify-between p-3 hover:bg-zinc-800/80 transition-colors"
@@ -95,6 +104,12 @@ export default function PendingBills({ bills }) {
                               <span className="text-sm font-bold text-purple-400">{formatCurrency(bill.amount)}</span>
                             </div>
                           ))}
+                          <div className="flex justify-between items-center p-3 mt-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                            <span className="text-sm font-bold text-purple-300">Total do mês</span>
+                            <span className="text-sm font-bold text-purple-400">
+                              {formatCurrency(monthBills.reduce((acc, b) => acc + Number(b.amount), 0))}
+                            </span>
+                          </div>
                         </div>
                       )}
                     </div>
